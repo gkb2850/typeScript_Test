@@ -23,3 +23,9 @@ function sum(a: number, b: number): number {
 }
 
 sum(1, 2)
+
+class OO {
+    static po = 0
+}
+
+console.log(OO)
