@@ -5,12 +5,13 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 //webpack中所有的配置信息都应该写在moudle.exports中
 module.exports = {
-    entry: './src/index.js',
+    entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
         environment: {
-            arrowFunction: false
+            arrowFunction: false,
+            const: false
         }
     },
     module: {
@@ -40,17 +41,41 @@ module.exports = {
                     'ts-loader'
                 ],
                 exclude: /node_modules/
+            },
+            {
+                test: /\.less$/,
+                use:[
+                    "style-loader", 
+                    "css-loader",
+                    //引入postcss
+                    {
+                       loader: "postcss-loader",
+                       options: {
+                           postcssOptions: {
+                               plugins:[
+                                   [
+                                       "postcss-preset-env",
+                                       {
+                                           browsers: "last 2 version"
+                                       }
+                                   ]
+                               ]
+                           }
+                       } 
+                    },
+                    "less-loader"]
             }
         ]
     },
     plugins: [
         new CleanWebpackPlugin(),
         new HTMLWebpackPlgin({
-            title: '这是一个自定义的title'
+            template: './src/index.html'
         })
     ],
     //用来设置引用模块
     resolve: {
         extensions: ['.ts', '.js']
-    }
+    },
+    mode: 'development'
 }
